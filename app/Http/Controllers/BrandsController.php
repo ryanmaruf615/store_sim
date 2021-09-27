@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
-class CategoriesController extends Controller
+class BrandsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +15,8 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = Category::orderby('created_at','DESC')->get();
-        return view('categories.index',compact('categories'));
+        $brands = Brand::orderby('created_at','DESC')->get();
+        return view('brands.index',compact('brands'));
     }
 
     /**
@@ -25,7 +26,7 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        return view('categories.create');
+        return view('brands.create');
     }
 
     /**
@@ -37,14 +38,14 @@ class CategoriesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'name' => 'required|min:2|max:50|unique:categories'
+            'name' => 'required|min:2|max:50|unique:brands'
         ]);
-        $category = new Category();
-        $category->name = $request->name;
-        $category->save();
+        $brand = new Brand();
+        $brand->name = $request->name;
+        $brand->save();
 
-        flash('Category Created Successfully ')->success();
-        return redirect(route('categories.index'));
+        flash('Brand Created Successfully ')->success();
+        return redirect(route('brands.index'));
     }
 
     /**
@@ -66,9 +67,8 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::findOrFail($id);
-        return view('categories.edit',compact('category'));
-
+        $brand = Brand::findOrFail($id);
+        return view('brands.edit',compact('brand'));
     }
 
     /**
@@ -81,16 +81,15 @@ class CategoriesController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-            'name' => 'required|min:2|max:50|unique:categories,name,'.$id
+            'name' => 'required|min:2|max:50|unique:brands,name,'.$id
         ]);
 
-        $category = Category::findOrFail($id);
-        $category->name = $request->name;
-        $category->save();
+        $brand = Brand::findOrFail($id);
+        $brand->name = $request->name;
+        $brand->save();
 
-        flash('Category Updated Successfully ')->success();
-        return redirect()->route('categories.index');
-
+        flash('Brand Updated Successfully ')->success();
+        return redirect()->route('brands.index');
     }
 
     /**
@@ -101,10 +100,10 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::findOrFail($id);
-        $category -> delete();
+        $brand = Brand::findOrFail($id);
+        $brand -> delete();
 
-        flash('Category Deleted Successfully ')->success();
-        return redirect()->route('categories.index');
+        flash('Brand Deleted Successfully ')->success();
+        return redirect()->route('brands.index');
     }
 }
